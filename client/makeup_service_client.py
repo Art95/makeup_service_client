@@ -22,10 +22,6 @@ class MakeupServiceClient:
                            'image': self._convert_image_to_jpeg(image),
                        })
 
-    @staticmethod
-    def receive_segmentation(data):
-        print(data)
-
     def close(self):
         self.__sio.disconnect()
 

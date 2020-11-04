@@ -1,32 +1,15 @@
-import time
 import cv2
 
 
 class VideoStreamer:
-    def __init__(self, queue, flip=True, fps=10):
-        self.__flip = flip
-        self.__stop = False
-        self.__queue = queue
-        self.__fps = fps
+    def __init__(self):
+        self.__video = cv2.VideoCapture(0)
 
-    def run(self):
-        for i in range(50):
-        #while not self.__stop:
-            stream = cv2.VideoCapture(0)
-            ret, image = stream.read()
-            stream.release()
+    def __del__(self):
+        self.__video.release()
 
-            if not ret:
-                continue
+    def get_frame(self):
+        ret, frame = self.__video.read()
+        ret, jpeg = cv2.imencode('.jpg', frame)
 
-            if self.__flip:
-                image = cv2.flip(image, 1)
-
-            self.__queue.put(image)
-            time.sleep(1.0 / self.__fps)
-
-        self.close()
-
-    def close(self):
-        self.__stop = True
-
+        return jpeg.tobytes()
