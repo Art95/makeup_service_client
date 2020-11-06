@@ -2,25 +2,26 @@ import base64
 import time
 import cv2
 import socketio
-import queue
+from client import views
 
 
 class MakeupServiceClient:
-    def __init__(self, server_address):
+    def __init__(self, server_address, server_port):
         self.__server_address = server_address
-        self.__server_port = 5001
+        self.__server_port = server_port
 
         self.__sio = socketio.Client()
-        self.__sio.connect('http://{}:{}'.format(self.__server_address, self.__server_port), transports=['websocket'],
-                           namespaces=['/images'])
+        self.__sio.connect('http://{}:{}'.format(self.__server_address, self.__server_port),
+                           namespaces=['/stream'])
+        self.__sio.on('segmentation', views.receive_segmentation, namespace='/stream')
+
         time.sleep(1)
 
-        self.__response_que = queue.Queue()
-
     def send_image(self, image):
-        self.__sio.emit('frame', {
+        self.__sio.emit('image', {
                            'image': self._convert_image_to_jpeg(image),
-                       })
+                       },
+                        namespace='/stream')
 
     def close(self):
         self.__sio.disconnect()
