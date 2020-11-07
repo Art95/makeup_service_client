@@ -1,17 +1,17 @@
 import base64
 import time
 import cv2
-import socketio
 import numpy as np
+import socketio
 from client.makeup_applier import MakeupApplier
 
 makeup = MakeupApplier()
 
 
 def receive_segmentation(data):
-    decoded = base64.b64decode(data['segmentation'])
-    np_arr = np.frombuffer(decoded, np.uint8)
-    makeup.put_image(np_arr)
+    segmentation = data['segmentation']
+    np_segmentation = np.array(segmentation)
+    makeup.put_segmentation(np_segmentation)
 
 
 class MakeupServiceClient:

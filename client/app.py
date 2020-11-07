@@ -1,8 +1,8 @@
 from flask import Flask
 import os
 import argparse
+import time
 from flask_socketio import SocketIO
-from client import views
 from client.makeup_service_client import MakeupServiceClient
 from client.video_streamer import VideoStreamer
 from client.makeup_applier import MakeupApplier
@@ -23,6 +23,17 @@ def parse_args():
     return parse.parse_args()
 
 
+def provide_images(client, video_streamer, makeup_applier, fps):
+    while True:
+        ret, image = video_streamer.get_frame()
+
+        if ret:
+            client.send_image(image)
+            makeup_applier.put_image(image)
+
+        time.sleep(1.0 / fps)
+
+
 if __name__ == '__main__':
     args = parse_args()
 
@@ -33,8 +44,9 @@ if __name__ == '__main__':
     client = MakeupServiceClient("127.0.0.1", 5000)
     video_streamer = VideoStreamer(0)
     makeup_applier = MakeupApplier()
+    fps = 2
 
-    socketio.start_background_task(views.send_frames, client, video_streamer)
+    socketio.start_background_task(provide_images, client, video_streamer, makeup_applier, fps)
     socketio.start_background_task(makeup_applier.run)
     print("passed")
 
