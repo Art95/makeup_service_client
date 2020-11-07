@@ -4,9 +4,9 @@ import cv2
 import argparse
 import time
 from flask_socketio import SocketIO
-from client.makeup_service_client import MakeupServiceClient
-from client.video_streamer import VideoStreamer
-from client.makeup_applier import MakeupApplier
+from makeup_service_client.client.makeup_client import MakeupServiceClient
+from makeup_service_client.media.video_streamer import VideoStreamer
+from makeup_service_client.media.makeup_applier import MakeupApplier
 
 
 app = Flask(__name__)

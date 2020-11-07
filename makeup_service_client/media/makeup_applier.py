@@ -1,7 +1,7 @@
 import cv2
 import multiprocessing
 import threading
-from client.image_transformation import change_segment_color, HeadPart
+from makeup_service_client.media.image_transformation import change_segment_color, HeadPart
 
 
 class ThreadSafeSingleton(type):

@@ -3,7 +3,7 @@ import time
 import cv2
 import numpy as np
 import socketio
-from client.makeup_applier import MakeupApplier
+from makeup_service_client.media.makeup_applier import MakeupApplier
 
 makeup = MakeupApplier()
 
