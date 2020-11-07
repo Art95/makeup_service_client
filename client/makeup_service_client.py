@@ -19,6 +19,9 @@ class MakeupServiceClient:
 
     def send_image(self, image):
         self.__sio.emit('image', {
+                           'hair_color': [0, 255, 0],
+                           'upper_lip_color': [0, 0, 255],
+                           'lower_lip_color': [255, 0, 0],
                            'image': self._convert_image_to_jpeg(image),
                        },
                         namespace='/stream')
@@ -28,8 +31,8 @@ class MakeupServiceClient:
 
     def _convert_image_to_jpeg(self, image):
         frame = cv2.imencode('.jpg', image)[1].tobytes()
-        frame = base64.b64encode(frame).decode('utf-8')
+        frame = base64.b64encode(frame)
 
-        return "data:image/jpeg;base64,{}".format(frame)
+        return frame
 
 
