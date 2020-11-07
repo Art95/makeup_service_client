@@ -2,7 +2,16 @@ import base64
 import time
 import cv2
 import socketio
-from client import views
+import numpy as np
+from client.makeup_applier import MakeupApplier
+
+makeup = MakeupApplier()
+
+
+def receive_segmentation(data):
+    decoded = base64.b64decode(data['segmentation'])
+    np_arr = np.frombuffer(decoded, np.uint8)
+    makeup.put_image(np_arr)
 
 
 class MakeupServiceClient:
@@ -13,7 +22,7 @@ class MakeupServiceClient:
         self.__sio = socketio.Client()
         self.__sio.connect('http://{}:{}'.format(self.__server_address, self.__server_port),
                            namespaces=['/stream'])
-        self.__sio.on('segmentation', views.receive_segmentation, namespace='/stream')
+        self.__sio.on('segmentation', receive_segmentation, namespace='/stream')
 
         time.sleep(1)
 
@@ -28,6 +37,7 @@ class MakeupServiceClient:
 
     def close(self):
         self.__sio.disconnect()
+
 
     def _convert_image_to_jpeg(self, image):
         frame = cv2.imencode('.jpg', image)[1].tobytes()

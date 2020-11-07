@@ -5,6 +5,7 @@ from flask_socketio import SocketIO
 from client import views
 from client.makeup_service_client import MakeupServiceClient
 from client.video_streamer import VideoStreamer
+from client.makeup_applier import MakeupApplier
 
 
 app = Flask(__name__)
@@ -31,8 +32,10 @@ if __name__ == '__main__':
 
     client = MakeupServiceClient("127.0.0.1", 5000)
     video_streamer = VideoStreamer(0)
+    makeup_applier = MakeupApplier()
 
     socketio.start_background_task(views.send_frames, client, video_streamer)
+    socketio.start_background_task(makeup_applier.run)
     print("passed")
 
     socketio.run(app, host, port, debug=debug)
