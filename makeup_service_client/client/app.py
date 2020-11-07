@@ -20,6 +20,9 @@ def parse_args():
     parse.add_argument('--host', default="127.0.0.1")
     parse.add_argument('--port', default=5002)
     parse.add_argument('--debug', default=True)
+    parse.add_argument('--hair-color', nargs="*", type=int, default=[230, 50, 20])
+    parse.add_argument('--upper-lip-color', nargs="*", type=int, default=[20, 70, 180])
+    parse.add_argument('--lower-lip-color', nargs="*", type=int, default=[20, 70, 180])
     parse.add_argument('--server_host', default="127.0.0.1")
     parse.add_argument('--server_port', default=5000)
     parse.add_argument('--fps', default=5)
@@ -63,11 +66,15 @@ if __name__ == '__main__':
     flip = args.flip
     fps = args.fps
 
+    colors = [args.hair_color, args.upper_lip_color, args.lower_lip_color]
+
     frame_size = (512, 512)
+
+    makeup_applier = MakeupApplier()
+    makeup_applier.set_colors(colors)
 
     client = MakeupServiceClient(server_host, server_port)
     video_streamer = VideoStreamer(0, frame_size, flip)
-    makeup_applier = MakeupApplier()
 
     socketio.start_background_task(makeup_applier.run)
     socketio.start_background_task(provide_images, client, video_streamer, makeup_applier, fps)

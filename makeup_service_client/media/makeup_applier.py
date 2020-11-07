@@ -50,6 +50,9 @@ class MakeupApplier(metaclass=ThreadSafeSingleton):
     def stop(self):
         self.__switch = False
 
+    def set_colors(self, colors):
+        self.__colors = colors
+
     def _apply_makeup(self, image, segmentation):
         for i, head_part in enumerate(self.__head_parts):
             image = change_segment_color(image, segmentation, head_part, self.__colors[i])
