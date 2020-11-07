@@ -9,9 +9,10 @@ makeup = MakeupApplier()
 
 
 def receive_segmentation(data):
+    image_id = data['id']
     segmentation = data['segmentation']
     np_segmentation = np.array(segmentation)
-    makeup.put_segmentation(np_segmentation)
+    makeup.put_segmentation({'id': image_id, 'segmentation': np_segmentation})
 
 
 class MakeupServiceClient:
@@ -26,12 +27,10 @@ class MakeupServiceClient:
 
         time.sleep(1)
 
-    def send_image(self, image):
+    def send_image(self, image_package):
         self.__sio.emit('image', {
-                           'hair_color': [0, 255, 0],
-                           'upper_lip_color': [0, 0, 255],
-                           'lower_lip_color': [255, 0, 0],
-                           'image': self._convert_image_to_jpeg(image),
+                           'id': image_package['id'],
+                           'image': self._convert_image_to_jpeg(image_package['image']),
                        },
                         namespace='/stream')
 

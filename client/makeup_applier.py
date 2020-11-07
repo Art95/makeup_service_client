@@ -24,25 +24,31 @@ class MakeupApplier(metaclass=ThreadSafeSingleton):
         self.__colors = [[0, 255, 0], [255, 0, 0], [0, 0, 255]]
         self.__head_parts = [HeadPart.hair, HeadPart.upper_lip, HeadPart.lower_lip]
 
+        self.__switch = True
+
     def run(self):
-        while True:
+        while self.__switch:
             if self.__image_queue.empty() or self.__segmentation_queue.empty():
                 continue
 
             image = self.__image_queue.get()
             segmentation = self.__segmentation_queue.get()
 
-            transformed_image = self._apply_makeup(image, segmentation)
+            transformed_image = self._apply_makeup(image['image'], segmentation['segmentation'])
 
-            cv2.imshow('Makeup', transformed_image)
+            resized_transformed = cv2.resize(transformed_image, image['meta']['original_size'])
+            cv2.imshow('Makeup', resized_transformed)
 
-            cv2.waitKey(1)
+        cv2.destroyAllWindows()
 
     def put_image(self, image):
         self.__image_queue.put(image)
 
     def put_segmentation(self, segmentation):
         self.__segmentation_queue.put(segmentation)
+
+    def stop(self):
+        self.__switch = False
 
     def _apply_makeup(self, image, segmentation):
         for i, head_part in enumerate(self.__head_parts):
