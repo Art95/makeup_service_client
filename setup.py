@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="makeup_service_client",
-    version="0.0.1",
+    version="1.0.0",
     author="Artem Baraniuk",
     author_email="artem.baranyuk@gmail.com",
     description="Client for makeup service application",
