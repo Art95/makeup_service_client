@@ -42,7 +42,6 @@ RUN git clone https://github.com/opencv/opencv.git && \
     cd / && rm -rf opencv/
 
 EXPOSE 8081
-USER root
 
 # IMPORTANT: Copy /etc/protocols to folder with Dockerfile to execute this. Needed for tcp to work
 COPY ./protocols /etc/protocols

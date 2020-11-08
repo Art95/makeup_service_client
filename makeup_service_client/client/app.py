@@ -50,9 +50,12 @@ def provide_images(client, video_streamer, makeup_applier, fps):
 
         if cv2.waitKey(1) == 27:
             makeup_applier.stop()
+            video_streamer.stop()
             break
 
         time.sleep(1.0 / fps)
+
+    socketio.stop()
 
 
 if __name__ == '__main__':
@@ -64,7 +67,7 @@ if __name__ == '__main__':
     server_host = args.server_host
     server_port = args.server_port
     flip = args.flip
-    fps = args.fps
+    fps = int(args.fps)
 
     colors = [args.hair_color, args.upper_lip_color, args.lower_lip_color]
 
