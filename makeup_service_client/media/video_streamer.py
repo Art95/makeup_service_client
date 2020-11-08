@@ -8,6 +8,9 @@ class VideoStreamer:
         self.__flip = flip
 
     def __del__(self):
+        self.stop()
+
+    def stop(self):
         self.__video.release()
 
     def get_frame(self):

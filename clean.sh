@@ -1,0 +1,2 @@
+sudo docker stop makeup_service_client
+sudo docker rm makeup_service_client
