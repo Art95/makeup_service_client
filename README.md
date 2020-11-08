@@ -13,12 +13,12 @@ but it demands OpenCV to be built from sources and passed to venv.
 1. Make sure that server part is running. Follow instructions [here](https://github.com/Art95/makeup_service/)
 2. [Optional] If docker is not installed go to [installation guide](https://docs.docker.com/engine/install/ubuntu/)
 3. [Optional] You can configure your system to avoid running *sudo* for docker commands [link](https://docs.docker.com/engine/install/linux-postinstall/)
-4. Run
+4. Pull docker (alternatively, you can build image yourself by following __Note__ section below)
 ```
     sudo docker pull abaraniuk/makeup_service:client
 ```
 5. Go to folder where you want code to be cloned to
-6. Run 
+6. Clone project's code 
 ```
     git clone https://github.com/Art95/makeup_service_client.git
     cd makeup_service_client
@@ -30,6 +30,10 @@ but it demands OpenCV to be built from sources and passed to venv.
 8. To stop service run Ctrl+C and then
 ```
     sudo ./clean.sh
+```
+__Note__: to build docker go to project's directory and run:
+```
+    sudo docker build -t <NAME-FOR-IMAGE> .
 ```
 
 __Note__: you can look into start.sh and execute docker commands with needed parameters yourself.
