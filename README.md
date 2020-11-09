@@ -7,6 +7,9 @@ Client side for [service](https://github.com/Art95/makeup_service/) that allows 
 * Docker
 
 ## Running application
+__Note__: if both server and client are running on the same machine,
+please, plug in charger for laptops and expect some delays in stream.
+
 Approach using docker is described below. Using virtual environments is also possible
 but it demands OpenCV to be built from sources and passed to venv. 
 
@@ -23,11 +26,15 @@ but it demands OpenCV to be built from sources and passed to venv.
     git clone https://github.com/Art95/makeup_service_client.git
     cd makeup_service_client
 ```
-7. To start docker run
+7. Allow docker to show windows by running
+```
+    xhost +local:
+```
+8. To start docker run
 ```
     sudo ./start.sh
 ```
-8. To stop service run Ctrl+C and then
+9. To stop service run Ctrl+C and then
 ```
     sudo ./clean.sh
 ```
